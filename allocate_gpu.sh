@@ -1,1 +1,0 @@
-mlx worker launch -- bash
