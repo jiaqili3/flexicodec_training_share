@@ -25,7 +25,7 @@ I recommend tune the mel spectrogram reconstruction settings for better acoustic
 One suggestion is: if you trained DAC and get satisfying result, then you can use the same settings for flexicodec (if you are training with the same data and sampling rate).
 
 Tips for training flexicodec:
-- Ehen training flexicodec, it is recommended to train with fixed frame rate first, verify it's all right, then init from this checkpoint and move to flex frame rate in order to train stabily. 
+- When training flexicodec, it is recommended to train with fixed frame rate first, verify it's all right, then init from this checkpoint and move to flex frame rate in order to train stabily. (this is where https://huggingface.co/jiaqili3/flexicodec/blob/main/dualcodec_with_sensevoice_12hz_soundstream.safetensors is used for)
 - For FlexiCodec training, the idea is to switch DualCodec with another semantic encoder “SenseVoice” and train it, and then add flexible-frame-rate modules and continue training. So the two projects are related.
 - The training of DualCodec is built on DAC. If you have trained a DAC (or DualCodec, or other codec) before and already get good performance, then its hyperparameters/loss functions (like loss settings) can be directly migrated to these two codecs training.
 
