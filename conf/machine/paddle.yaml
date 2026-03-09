@@ -1,6 +1,0 @@
-dataset_folder: /home/paddle/sys/train_data/  # /gluster-ssd-tts/DATA_TTS/...
-init_model_path: /home/paddle/sys/init_model # /gluster-ssd-tts/jiaqi_repos
-w2v_path: ${.init_model_path}/w2v-bert-2
-hubert_ls960_path: ${.init_model_path}/hubert_ls960
-ckpt_root_path: ${.init_model_path}/soundstorm_ckpts
-log_dir: /home/paddle/sys/mnt/ # /gluster-ssd-tts/tts_share_training_logs
