@@ -1,0 +1,11 @@
+
+dataset:
+  _target_: zero_shot_tts_training.emilia.emiliawebdataset.create_emilia_rawaudio_dataset
+  urls:
+    - "/mnt/lijiaqi/emilia/Emilia/EN/*.tar"
+    - "/mnt/lijiaqi/emilia/Emilia/ZH/*.tar"
+  batch_size: 8
+  num_workers: 8
+  crop_length: 120000 # 24000*5
+  target_sample_rate: 24000
+

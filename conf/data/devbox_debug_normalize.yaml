@@ -1,0 +1,20 @@
+defaults: 
+  - devbox_debug
+  - _self_
+
+normalize: 
+  _target_: cosyvoice.dataset.processor.normalize
+  _partial_: true
+  use_kana: false
+
+data_pipeline:
+  - ${..gluster_opener}
+  - ${..shuffle}
+  - ${..normalize}
+  - ${..tokenize}
+  - ${..sort}
+  - ${..gluster_filter}
+  - ${..resample}
+  - ${..w2v_feature}
+  - ${..batch}
+  - ${..gluster_padding}

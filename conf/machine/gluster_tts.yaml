@@ -1,0 +1,9 @@
+# w2v_path: '/gluster-ssd-tts/jiaqi_repos/w2v-bert-2'
+# ckpt_root_path: /gluster-ssd-tts/jiaqi_repos/soundstorm_ckpts
+# log_dir: /gluster-ssd-tts/jiaqi_repos/tmp_checkpoints
+# dataset_folder: /gluster-ssd-tts/DATA_TTS
+w2v_path: '/gluster-tts/jiaqi_repos/w2v-bert-2'
+ckpt_root_path: /gluster-tts/jiaqi_repos/soundstorm_ckpts
+log_dir: /gluster-tts/jiaqi_repos/tmp_checkpoints
+dataset_folder: /gluster-tts/DATA_TTS
+init_model_path: /gluster-tts/jiaqi_repos

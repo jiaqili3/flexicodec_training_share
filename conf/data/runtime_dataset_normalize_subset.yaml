@@ -1,0 +1,7 @@
+defaults: 
+  - runtime_dataset_normalize
+  - _self_
+
+
+dataset:
+  use_vault_list: true

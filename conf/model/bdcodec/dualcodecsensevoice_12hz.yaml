@@ -1,0 +1,38 @@
+
+config:
+  _target_: zero_shot_tts_training.realtime_communication.taste_v2.configuration_flexicodec.FlexiCodecConfig
+  _convert_: all
+  encoder_dim: 32
+  sample_rate: 24000
+  encoder_rates: [4,5,6,8,2]
+  decoder_rates: [2,8,6,5,4]
+  semantic_downsample_factor: 1.33333
+  n_codebooks: 24
+  codebook_size: 4096
+  semantic_codebook_size: 32768
+  quantizer_dropout: 1.0
+  is_causal: false
+  use_similarity_alignment: false
+  similarity_threshold: 1.0
+  skip_normalize: true
+  # SenseVoice specific parameters
+  semantic_model_type: "sensevoice"
+  sensevoice_prepend_inputs: true
+  latent_dim: 512
+  ssl_dim: 512
+  semantic_model_path: "/mnt/lijiaqi/SenseVoiceSmall"
+  add_semantic_spec_loss: false
+
+model:
+  _target_: zero_shot_tts_training.realtime_communication.taste_v2.modeling_flexicodec.FlexiCodec
+  config: ${..config}
+
+discriminator:
+  _target_: zero_shot_tts_training.realtime_communication.codec_model.discriminator.Discriminator
+  sample_rate: 24000
+
+resume_path: /mnt/lijiaqi/exp/v0/dualcodecsensevoice_12hz/dualcodecsensevoice_12hz_20251022/checkpoint/epoch-0000_step-0240000_loss-0.000000-dualcodecsensevoice_12hz
+resume_type: resume
+
+batch_size: 11
+crop_length: 72000

@@ -1,0 +1,10 @@
+# w2v_path: '/data1/lijiaqi/codebase/w2v-bert-2'
+# ckpt_root_path: /data1/lijiaqi/codebase/soundstorm_ckpts
+# log_dir: /data1/lijiaqi/codebase/tmp_checkpoints
+# dataset_folder: /gluster-ssd-tts/DATA_TTS
+w2v_path: '/data1/lijiaqi/codebase/w2v-bert-2'
+hubert_ls960_path: '/data1/lijiaqi/codebase/hubert_ls960'
+ckpt_root_path: /data1/lijiaqi/codebase
+log_dir:/data1/lijiaqi/codebase/tmp_checkpoints
+dataset_folder: /gluster-ssd-tts/DATA_TTS
+init_model_path: /data1/lijiaqi/codebase

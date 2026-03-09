@@ -1,0 +1,9 @@
+defaults: 
+  - devbox_debug_normalize
+  - _self_
+
+gluster_padding: 
+  return_speech: true
+
+sort:
+  ignore_text: true

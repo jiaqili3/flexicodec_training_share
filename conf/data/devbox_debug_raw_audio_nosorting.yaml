@@ -1,0 +1,26 @@
+defaults: 
+  - devbox_debug_normalize
+  - _self_
+
+gluster_padding: 
+  return_speech: true
+
+sort:
+  ignore_text: true
+
+batch:
+  _target_: cosyvoice.dataset.processor.batch
+  _partial_: true
+  batch_type: static
+  batch_size: 5
+  ignore_text: true
+  max_frames_in_batch: null
+
+data_pipeline:
+  - ${..gluster_opener}
+  - ${..normalize}
+  - ${..tokenize}
+  - ${..gluster_filter}
+  - ${..resample}
+  - ${..batch}
+  - ${..gluster_padding}

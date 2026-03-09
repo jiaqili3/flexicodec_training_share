@@ -1,0 +1,32 @@
+defaults:
+  - data: emiliawebdataset_static_audio
+  - model: bdcodec/flexicodec_reproduce
+  - trainer: codec_model_trainer
+  - _self_
+hydra:
+  run:
+    dir: /mnt/lijiaqi/exp/v0/${trainer.exp_name}
+
+data:
+  dataset:
+    batch_size: ${model.batch_size}
+    # crop_length: 76800 # 24000 * 5
+    crop_length: ${model.crop_length} # 24000 * 5
+
+
+trainer:
+  exp_name: tmp
+  dataloader: ${data.dataset}
+  args:
+    resume: true
+    reset_steps: true
+    resume_from_ckpt_path: ${model.resume_path}
+    resume_type: ${model.resume_type}
+  cfg:
+    add_semantic_spec_loss: false
+    train:
+      max_steps: 1000000
+      save_checkpoint_stride:
+        - 30000
+      keep_last: [30]
+      disable_mixed_precision: true

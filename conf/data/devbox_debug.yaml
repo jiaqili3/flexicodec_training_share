@@ -1,0 +1,16 @@
+defaults:
+  - runtime_dataset
+  - _self_
+
+dataset:
+  language_list: 
+    - FR
+  use_vault_list: false
+  vault_list: 
+    - EN_F00004
+
+dataloader:
+  dataset: ${..datalist}
+  batch_size: null
+  num_workers: 0
+  prefetch_factor: null

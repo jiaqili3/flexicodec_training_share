@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zero-shot-tts-training"
+version = "0.1.0"
+description = "Zero-shot TTS training with DualCodec and SenseVoice"
+authors = [
+    {name = "lijiaqi", email = "jiaqili3@link.cuhk.edu.cn"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "torch>=1.12.0",
+    "torchaudio>=0.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "flake8>=4.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/example/zero-shot-tts-training"
+Repository = "https://github.com/example/zero-shot-tts-training.git"
+Issues = "https://github.com/example/zero-shot-tts-training/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["zero_shot_tts_training*"]
+
+[tool.setuptools.package-data]
+"zero_shot_tts_training" = ["*.yaml", "*.json", "*.txt"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["zero_shot_tts_training"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short" 
+
+[tool.uv.workspace]
+members = [
+    "zero_shot_tts_training/codec_eval",
+]

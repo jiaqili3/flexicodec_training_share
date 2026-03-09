@@ -1,0 +1,61 @@
+
+config:
+  _target_: zero_shot_tts_training.realtime_communication.taste_v2.configuration_flexicodec.FlexiCodecConfig
+  _convert_: all
+  encoder_dim: 32
+  sample_rate: 16000
+  decoder_dim: 1536
+  encoder_rates: [4,4,5,8,2]
+  decoder_rates: [2,8,5,4,4]
+  semantic_downsample_factor: 1.33333
+  n_codebooks: 24
+  codebook_size: 4096
+  semantic_codebook_size: 32768
+  quantizer_dropout: 1.0
+  is_causal: false
+  skip_normalize: true
+  # SenseVoice specific parameters
+  semantic_model_type: "sensevoice"
+  sensevoice_prepend_inputs: true
+  latent_dim: 512
+  ssl_dim: 512
+  semantic_model_path: "/mnt/lijiaqi/SenseVoiceSmall"
+  add_semantic_spec_loss: false
+  # FlexiCodec specific parameters
+  use_similarity_alignment: true
+  similarity_threshold: 0.91
+  use_bottleneck_transformer: true
+  transformer_num_layers: 32
+  transformer_dim_feedforward: 2048
+  transformer_num_heads: 8
+  transformer_causal: false
+  transformer_context_frames: 38 # 3-second context
+  use_query_token_aggregator: true
+  # second transformer parameters
+  use_second_decoder_transformer: false
+  transformer_2_num_layers: 24
+  insert_query_before_downsample: false # no insert before
+  # Dynamic similarity threshold parameters
+  use_dynamic_similarity_threshold: true
+  similarity_threshold_lower: 0.85
+  # similarity_threshold_lower: 0.
+  similarity_threshold_upper: 1.0
+  use_fsq_for_semantic_vq: true
+  agg_add_query_embedding: true
+
+model:
+  _target_: zero_shot_tts_training.realtime_communication.taste_v2.modeling_flexicodec.FlexiCodec
+  config: ${..config}
+
+discriminator:
+  _target_: zero_shot_tts_training.realtime_communication.codec_model.discriminator.Discriminator
+  sample_rate: 16000
+
+resume_path: TODO # replace this with https://huggingface.co/jiaqili3/flexicodec/blob/main/dualcodec_with_sensevoice_12hz_soundstream.safetensors
+# dualcodec_with_sensevoice_12hz_soundstream.safetensors is dualcodec with sensevoice encoder. 
+# when training flexicodec, it is recommended to use this checkpoint as the initial checkpoint,
+# or train with fixed frame rate first, then init from this checkpoint and move to flex frame rate.
+resume_type: finetune
+
+batch_size: 8
+crop_length: 96000

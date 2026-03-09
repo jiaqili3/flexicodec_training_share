@@ -1,0 +1,38 @@
+defaults: 
+  - devbox_debug
+  - _self_
+segment_speech:
+  _target_: cosyvoice.dataset.processor.segment_speech
+  _partial_: true
+  segment_length: 76800 # frames
+gluster_filter:
+  _target_: cosyvoice.dataset.processor.gluster_filter
+  _partial_: true
+  ignore_text: true
+# dataset:
+#   language_list:
+#     - ZH
+#   use_vault_list: false
+#   vault_list:
+#     - ZH_F00002
+
+gluster_padding: 
+  return_speech: true
+  ignore_text: true
+batch:
+  _target_: cosyvoice.dataset.processor.batch
+  _partial_: true
+  batch_type: static
+  batch_size: 5
+  ignore_text: true
+  max_frames_in_batch: null
+
+data_pipeline:
+  - ${..gluster_opener}
+  - ${..shuffle}
+  - ${..gluster_filter} # with no text token filter
+  - ${..resample}
+  - ${..segment_speech}
+  - ${..w2v_feature}
+  - ${..batch}
+  - ${..gluster_padding}

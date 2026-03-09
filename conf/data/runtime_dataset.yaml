@@ -1,0 +1,179 @@
+
+# configs passed to gluster_dataset.py
+dataloader:
+  _target_: torch.utils.data.DataLoader
+  dataset: ${..datalist}
+  batch_size: null
+  num_workers: 1
+  prefetch_factor: 30
+
+add_white_noise:
+  _target_: cosyvoice.dataset.processor.add_white_noise
+  _partial_: true
+
+gluster_opener:
+  _target_: cosyvoice.dataset.processor.gluster_opener
+  _partial_: true
+  # min_seconds: 3.0
+
+get_tokenizer:
+  _target_: whisper.tokenizer.get_tokenizer
+  _partial_: true
+  multilingual: true
+  num_languages: 100
+  language: 'en'
+  task: 'transcribe'
+
+tokenize:
+  _target_: cosyvoice.dataset.processor.tokenize
+  _partial_: true
+  get_tokenizer: ${..get_tokenizer}
+  allowed_special: 'all'
+
+gluster_filter:
+  _target_: cosyvoice.dataset.processor.gluster_filter
+  _partial_: true
+  max_length: 2000
+  min_length: 150
+  token_max_length: 300 # text token max length
+
+resample:
+  _target_: cosyvoice.dataset.processor.resample
+  _partial_: true
+  resample_rate: ${trainer.sample_rate}
+
+shuffle:
+  _target_: cosyvoice.dataset.processor.shuffle
+  _partial_: true
+  shuffle_size: 60000
+
+sort:
+  _target_: cosyvoice.dataset.processor.sort
+  _partial_: true
+  sort_size: 10000  # sort_size should be less than shuffle_size
+  ignore_text: false
+
+batch:
+  _target_: cosyvoice.dataset.processor.batch
+  _partial_: true
+  batch_type: 'dynamic'
+  max_frames_in_batch: ${trainer.max_tokens}
+
+gluster_padding:
+  _target_: cosyvoice.dataset.processor.gluster_padding
+  _partial_: true
+  use_spk_embedding: false # change to True during sft
+
+# extract spectrogram for w2v
+w2v_feat_extractor:
+  _target_: transformers.SeamlessM4TFeatureExtractor.from_pretrained
+  _partial_: false
+  pretrained_model_name_or_path: ${machine.w2v_path}
+w2v_feature:
+  _target_: cosyvoice.dataset.processor.w2v_feature
+  _partial_: true
+  feature_extractor: ${..w2v_feat_extractor}
+
+dataset:
+  _target_: cosyvoice.dataset.gluster_dataset.GlusterDataset
+  mnt_path: ${machine.dataset_folder}
+  language_list:
+    - EN
+    - JA
+    - ZH
+  use_vault_list: false
+  vault_list:
+    - EN_F00000
+    - EN_F00001
+    - EN_F10000
+    - EN_F00002
+    - ZH_F00001
+    - ZH_F10001
+    - ZH_F00002
+    - JA_F00001
+    - JA_F10000
+    - JA_F00002
+    - JA_F10001
+    - JA_F10002
+    - ZH_F00005
+    - EN_F00003
+    - EN_F10004
+    - EN_F10010
+    - EN_F10016
+    - ZH_F10002
+    - ZH_F10009
+    - ZH_F10015
+    - EN_F00004
+    - EN_F10005
+    - EN_F10011
+    - EN_F10017
+    - ZH_F10003
+    - ZH_F10010
+    - ZH_F10017
+    - EN_F10001
+    - EN_F10006
+    - EN_F10012
+    - EN_F19999
+    - JA_F00004
+    # - JA_F10005
+    # - JA_F10011
+    # - JA_F10017
+    # - ZH_F10005
+    # - ZH_F10011
+    # - ZH_F19999
+    # - EN_F10002
+    # - EN_F10007
+    # - EN_F10013
+    # - JA_F10006
+    # - JA_F10012
+    # - JA_F19999
+    # - ZH_F10006
+    # - ZH_F10012
+    # - EN_F10003
+    # - EN_F10008
+    # - EN_F10014
+    # - JA_F10007
+    # - JA_F10013
+    # - ZH_F10007
+    # - ZH_F10013
+    # - EN_F10009
+    # - EN_F10015
+    # - JA_F10008
+    # - JA_F10014
+    # - ZH_F10008
+    # - ZH_F10014
+
+  cfg: 
+    lru_cache: 128
+    w2v_path: ${machine.w2v_path}
+    preprocess:
+      min_dur: 0
+      max_dur: 35
+      hop_size: 320
+      use_filtered: true
+      batch_shuffle: true
+      local_shuffle: true
+      shuffle_range: 128
+      seed: ${trainer.args.seed}
+
+datalist_tmp: 
+  _target_: cosyvoice.dataset.dataset.DataList
+  lists: ${..dataset} # gluster dataset instance
+  shuffle: false
+  partition: true
+
+# data_pipeline.yaml
+data_pipeline:
+  - ${..gluster_opener}
+  - ${..shuffle}
+  - ${..tokenize}
+  - ${..sort}
+  - ${..gluster_filter}
+  - ${..resample}
+  - ${..w2v_feature}
+  - ${..batch}
+  - ${..gluster_padding}
+datalist:
+  _target_: cosyvoice.dataset.dataset.prepare_gluster_dataset
+  data_list: ${..datalist_tmp}
+  data_pipeline: ${..data_pipeline}

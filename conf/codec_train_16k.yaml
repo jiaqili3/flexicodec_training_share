@@ -1,0 +1,29 @@
+defaults:
+  - data: emiliawebdataset_static_audio
+  - model: bdcodec/dualcodecsensevoice_12hz
+  - trainer: codec_model_trainer
+  - _self_
+hydra:
+  run:
+    dir: /mnt/lijiaqi/exp/v0/${trainer.exp_name}
+
+data:
+  dataset:
+    batch_size: 6
+    crop_length: 76800 # 24000 * 5
+
+trainer:
+  exp_name: dualcodecsensevoice_12hz
+  dataloader: ${data.dataset}
+  args:
+    resume: false
+    reset_steps: true
+    resume_from_ckpt_path: null
+  cfg:
+    add_semantic_spec_loss: false
+    train:
+      max_steps: 1000000
+      save_checkpoint_stride:
+        - 20000
+      keep_last: [10]
+      disable_mixed_precision: true
