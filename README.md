@@ -19,7 +19,7 @@ or train with fixed frame rate first, then init from this checkpoint and move to
 Note: 
 The original flexicodec training implementation is in `zero_shot_tts_training/realtime_communication/taste_v2/modeling_dualcodec.py`
 However, it was used in the old server and might only be used as a reference for you.
-After I switched server, I lost access to the exact reproduction encironment (and had to use different data), and did not fully test out the new code. 
+After I switched server, I lost access to the exact reproduction encironment (and had to use different data), and have not fully tested out this codebase for full reproduction. 
 I recently briefly tested the code, and the resulting model seems to have lower acoustic quality than anticipated, but semantic quality is good. Due to the limited time, I did not fully investigate the cause.
 I recommend tune the mel spectrogram reconstruction settings for better acoustic quality.
 One suggestion is: if you trained DAC and get satisfying result, then you can use the same settings for flexicodec (if you are training with the same data and sampling rate).
