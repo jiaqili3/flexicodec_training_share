@@ -26,7 +26,8 @@ One suggestion is: if you trained DAC and get satisfying result, then you can us
 
 Tips for training flexicodec:
 - Ehen training flexicodec, it is recommended to train with fixed frame rate first, verify it's all right, then init from this checkpoint and move to flex frame rate in order to train stabily. 
-
+- For FlexiCodec training, the idea is to switch DualCodec with another semantic encoder “SenseVoice” and train it, and then add flexible-frame-rate modules and continue training. So the two projects are related.
+- The training of DualCodec is built on DAC. If you have trained a DAC (or DualCodec, or other codec) before and already get good performance, then its hyperparameters/loss functions (like loss settings) can be directly migrated to these two codecs training.
 
 Contributing to the codebase:
 
