@@ -7,5 +7,5 @@ dataset:
   batch_size: 8
   num_workers: 8
   crop_length: 120000 # 24000*5
-  target_sample_rate: 24000
+  target_sample_rate: 16000
 
