@@ -1,3 +1,5 @@
+# FlexiCodec Training Experimental Implementation
+
 This is an experimental training implementation of flexicodec (inference script is https://github.com/amphionspace/FlexiCodec). 
 
 The original flexicodec training implementation is in `zero_shot_tts_training/realtime_communication/taste_v2/modeling_dualcodec.py`
@@ -24,3 +26,10 @@ One suggestion is: if you trained DAC and get satisfying result, then you can us
 
 Tips for training flexicodec:
 - Ehen training flexicodec, it is recommended to train with fixed frame rate first, verify it's all right, then init from this checkpoint and move to flex frame rate in order to train stabily. 
+
+
+Contributing to the codebase:
+
+- If you find any issues or have any suggestions, please feel free to open an issue or a pull request.
+- If you have any questions, please feel free to contact me.
+- If you want to contribute to the training, please feel free to open an issue or a pull request.
