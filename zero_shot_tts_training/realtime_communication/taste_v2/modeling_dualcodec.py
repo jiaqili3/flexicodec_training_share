@@ -1070,10 +1070,11 @@ class DualCodec(nn.Module):
 
                 acoustic_aggregated = self.acoustic_aggregator(acoustic_features, alignment_matrices, num_segments_per_item)
                 # For distillation loss, aggregate the GT features as well
-                if not self.distill_with_avg:
-                    semantic_repr_gt_agg = self.semantic_aggregator(semantic_repr_ret, alignment_matrices, num_segments_per_item)
-                else:
-                    semantic_repr_gt_agg = self.aggregate_features(semantic_repr_ret, alignment_matrices)
+                with torch.no_grad():
+                    if not self.distill_with_avg:
+                        semantic_repr_gt_agg = self.semantic_aggregator(semantic_repr_ret, alignment_matrices, num_segments_per_item)
+                    else:
+                        semantic_repr_gt_agg = self.aggregate_features(semantic_repr_ret, alignment_matrices)
             else:
                 # Aggregate `semantic_repr` BEFORE convnext using simple mean-pooling
                 semantic_repr = self.aggregate_features(semantic_repr, alignment_matrices)
